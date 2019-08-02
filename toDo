@@ -1,0 +1,3 @@
+contenitore: lista? vector? coda? 
+gerarchia: devi fare una classe base e almeno 3 classi derivate
+salvataggio: xml o json?
