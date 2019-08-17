@@ -27,12 +27,14 @@ CONFIG += c++11
 SOURCES += \
         cpu.cpp \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+        mobile.cpp
 
 HEADERS += \
         cpu.h \
         deepptr.h \
         mainwindow.h \
+        mobile.h \
         qontainer.h
 
 # Default rules for deployment.
