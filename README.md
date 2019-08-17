@@ -1,2 +1,2 @@
-# Qompressor
-Archive tool written in C++
+# CPU Quatalog
+CPU catalog manager written in C++
