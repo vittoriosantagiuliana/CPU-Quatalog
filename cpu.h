@@ -23,6 +23,7 @@ public:
     virtual ~CPU() = default;
 
     static const std::map<const int, const std::string> manufacturers;
+    //static const std::map<const int, const std::string> sockets;
 
     /////////////////const CPU & operator= (const CPU &);
 
