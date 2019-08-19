@@ -19,13 +19,33 @@ public:
 
     unsigned int size() const;
 
-    class Iterator
+    class iterator
     {
+    private:
+        T * p;
     public:
-        Iterator Start() const;
+        iterator Start() const;
+        iterator End() const;
+        iterator (const T *);
+        iterator (const iterator &);
 
+        iterator & operator++ ();
+        friend iterator & operator++ (iterator &);
         T * operator->() const;
     };
+
+    class const_iterator
+    {
+    private:
+        const T * p;
+    public:
+        const_iterator Start() const;
+        const_iterator End() const;
+
+
+        const T * operator->() const;
+    };
+
 };
 
 // IMPLEMENTATION

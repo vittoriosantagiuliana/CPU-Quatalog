@@ -16,13 +16,15 @@ private:
     int manufacturingProcess;
     int TDP;
     bool x86_64;
-    bool eccMemorySupport; ////////// costruttore!
+    bool eccMemorySupport;
 
 public:
-    CPU(const int manufacturer, const std::string & model, const int socket, const int year, const int cores, const int threads, const int nm, const int w, const int bits);
+    CPU(const int manufacturer, const std::string & model, const int socket, const int year, const int cores, const int threads, const int nm, const int w, const bool bits, const bool ecc);
     virtual ~CPU() = default;
 
     static const std::map<const int, const std::string> manufacturers;
+
+    /////////////////const CPU & operator= (const CPU &);
 
     // getters
     const std::string & getChipManufacturer() const;

@@ -25,17 +25,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        addwidget.cpp \
         cpu.cpp \
+        desktop.cpp \
         main.cpp \
         mainwindow.cpp \
-        mobile.cpp
+        mobile.cpp \
+        server.cpp
 
 HEADERS += \
+        addwidget.h \
         cpu.h \
         deepptr.h \
+        desktop.h \
         mainwindow.h \
         mobile.h \
-        qontainer.h
+        qontainer.h \
+        server.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
