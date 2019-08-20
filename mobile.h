@@ -6,7 +6,7 @@
 class Mobile : public CPU
 {
 public:
-    Mobile(const int manufacturer, const std::string & model, const int socket, const int year, const int cores, const int threads, const int nm, const int w, const bool bits, const bool ecc);
+    Mobile(int manufacturer, const std::string & model, int socket, int year, int cores, int threads, int nm, int w, bool bits);
 
     static const std::map<const int, const std::string> sockets;
 

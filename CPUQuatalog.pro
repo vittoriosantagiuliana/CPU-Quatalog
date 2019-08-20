@@ -28,6 +28,7 @@ SOURCES += \
         addwidget.cpp \
         cpu.cpp \
         desktop.cpp \
+        exceptions.cpp \
         main.cpp \
         mainwindow.cpp \
         mobile.cpp \
@@ -38,6 +39,7 @@ HEADERS += \
         cpu.h \
         deepptr.h \
         desktop.h \
+        exceptions.h \
         mainwindow.h \
         mobile.h \
         qontainer.h \

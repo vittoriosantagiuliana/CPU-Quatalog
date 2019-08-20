@@ -1,9 +1,8 @@
 #include "server.h"
 
-Server::Server(const int manufacturer, const std::string & model, const int socket, const int year, const int cores, const int threads, const int nm, const int w, const bool bits, const bool ecc) : CPU(manufacturer, model, socket, year, cores, threads, nm, w, bits, ecc)
+Server::Server(int manufacturer, const std::string & model, int socket, int year, int cores, int threads, int nm, int w, bool bits) : CPU(manufacturer, model, socket, year, cores, threads, nm, w, bits, true)
 {
-    //if (!ecc)
-    //    throw eccException();
+
 }
 
 const std::map<const int, const std::string> Server::sockets ({

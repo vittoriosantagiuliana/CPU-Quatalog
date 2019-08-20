@@ -13,7 +13,7 @@ MainWindow::MainWindow (QWidget * parent) : QMainWindow(parent)
 
     cpuList = new QListWidget();
 
-    mainLayout = new QVBoxLayout();
+    mainLayout = new QVBoxLayout(this);
     mainLayout->addLayout(topButtonsLayout);
     mainLayout->addWidget(cpuList);
     
