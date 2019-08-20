@@ -32,6 +32,7 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         mobile.cpp \
+        serializexml.cpp \
         server.cpp
 
 HEADERS += \
@@ -43,6 +44,7 @@ HEADERS += \
         mainwindow.h \
         mobile.h \
         qontainer.h \
+        serializexml.h \
         server.h
 
 # Default rules for deployment.
