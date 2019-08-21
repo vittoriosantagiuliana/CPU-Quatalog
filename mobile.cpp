@@ -6,6 +6,36 @@ Mobile::Mobile(int manufacturer, const std::string & model, int socket, int year
     //    throw tdpException(50);
 }
 
+void Mobile::setEccMemorySupport(const bool) { }
+
+const std::string & Mobile::getSocket() const {
+    return sockets.at(socket);
+}
+
+void Mobile::setSocket(const int i) {
+    if (sockets.find(i) != sockets.end())
+        socket = i;
+    else
+        throw SocketException("mobile");
+}
+
+void Mobile::setCoreCount(const int i) {
+    if (i < maxCores)
+        coreCount = i;
+    else
+        throw CoresException(std::to_string(i));
+}
+
+void Mobile::setTdpRating(const int i) {
+    if (i < maxTdp)
+        TDP = i;
+    else
+        throw TDPException(std::to_string(i));
+}
+
+const int Mobile::maxCores(8);
+
+const int Mobile::maxTdp(50);
 
 const std::map<const int, const std::string> Mobile::sockets ({
     std::pair<const int, const std::string> (0, "Socket 7"),

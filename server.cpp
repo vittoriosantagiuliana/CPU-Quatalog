@@ -1,9 +1,39 @@
 #include "server.h"
 
 Server::Server(int manufacturer, const std::string & model, int socket, int year, int cores, int threads, int nm, int w, bool bits) : CPU(manufacturer, model, socket, year, cores, threads, nm, w, bits, true)
-{
+{ }
 
+void Server::setEccMemorySupport(const bool) { }
+
+const std::string & Server::getSocket() const {
+    return sockets.at(socket);
 }
+
+void Server::setSocket(const int i) {
+    if (sockets.find(i) != sockets.end())
+        socket = i;
+    else
+        throw SocketException("server");
+}
+
+void Server::setCoreCount(const int i) {
+    if (i < maxCores)
+        coreCount = i;
+    else
+        throw CoresException(std::to_string(i));
+}
+
+void Server::setTdpRating(const int i) {
+    if (i < maxTdp)
+        TDP = i;
+    else
+        throw TDPException(std::to_string(i));
+}
+
+
+const int Server::maxCores(64);
+
+const int Server::maxTdp(500);
 
 const std::map<const int, const std::string> Server::sockets ({
     std::pair<const int, const std::string> (0, "Slot 8"),

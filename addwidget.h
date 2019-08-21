@@ -4,6 +4,9 @@
 #include <array>
 #include <string>
 #include "cpu.h"
+#include "desktop.h"
+#include "mobile.h"
+#include "server.h"
 
 #include <QWidget>
 #include <QCheckBox>
@@ -24,7 +27,7 @@ private:
     QRadioButton * manufacturerRBtn;
     QLineEdit * modelLE;
     QComboBox * socketCB;
-    QLineEdit * yearLE;
+    QSpinBox * yearSB;
     QSpinBox * coreSB;
     QSpinBox * threadSB;
     QSpinBox * processSB;
@@ -48,14 +51,23 @@ private:
 
     QHBoxLayout * typeLayout;
     QHBoxLayout * manufacturerLayout;
+    QHBoxLayout * columnsLayout;
+    QVBoxLayout * labelsLayout;
+    QVBoxLayout * fieldsLayout;
+    QHBoxLayout * actionsLayout;
     QVBoxLayout * mainLayout;
 
 public:
     explicit AddWidget(QWidget *parent = nullptr);
 
 signals:
+    void created(CPU *);
 
 public slots:
+    void setMobileParameters(bool);
+    void setDesktopParameters(bool);
+    void setServerParameters(bool);
+    void createCpu();
 };
 
 #endif // ADDWIDGET_H

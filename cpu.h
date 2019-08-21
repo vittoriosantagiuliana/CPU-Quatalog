@@ -9,13 +9,15 @@ class CPU
 private:
     int chipManufacturer;
     std::string modelName;
-    int socket;
     int releaseYear;
-    int coreCount;
     int threadCount;
     int manufacturingProcess;
-    int TDP;
     bool x86_64;
+
+protected:
+    int socket;
+    int coreCount;
+    int TDP;
     bool eccMemorySupport;
 
 public:
@@ -44,7 +46,7 @@ public:
     void setModelName (const std::string &);
     virtual void setSocket(const int) = 0;
     void setReleaseYear(const int);
-    void setCoreCount(const int);
+    virtual void setCoreCount(const int) = 0;
     void setThreadCount(const int);
     void setManufacturingProcess(const int);
     virtual void setTdpRating(const int) = 0;

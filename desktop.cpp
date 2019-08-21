@@ -6,6 +6,40 @@ Desktop::Desktop(const int manufacturer, const std::string & model, const int so
     //    throw CoresException(cores);
 }
 
+void Desktop::setEccMemorySupport(const bool i) {
+    eccMemorySupport = i;
+}
+
+const std::string & Desktop::getSocket() const {
+    return sockets.at(socket);
+}
+
+void Desktop::setSocket(const int i) {
+    if (sockets.find(i) != sockets.end())
+        socket = i;
+    else
+        throw SocketException("desktop");
+}
+
+void Desktop::setCoreCount(const int i) {
+    if (i < maxCores)
+        coreCount = i;
+    else
+        throw CoresException(std::to_string(i));
+}
+
+void Desktop::setTdpRating(const int i) {
+    if (i < maxTdp)
+        TDP = i;
+    else
+        throw TDPException(std::to_string(i));
+}
+
+
+const int Desktop::maxCores(16);
+
+const int Desktop::maxTdp(500);
+
 const std::map<const int, const std::string> Desktop::sockets({
     std::pair<const int, const std::string>(0, "Socket 1"),
     std::pair<const int, const std::string>(1, "Socket 2"),
