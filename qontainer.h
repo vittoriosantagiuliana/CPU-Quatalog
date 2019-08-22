@@ -30,8 +30,10 @@ public:
         iterator operator++ (int);
         iterator & operator-- ();
         iterator operator-- (int);
-        T & operator*() const;
-        T * operator->() const;
+        T & operator* () const;
+        T * operator-> () const;
+        bool operator== (const iterator &) const;
+        bool operator!= (const iterator &) const;
     };
 
     class const_iterator
@@ -44,8 +46,10 @@ public:
         const_iterator operator++ (int);
         const_iterator & operator-- ();
         const_iterator operator-- (int);
-        T & operator*() const;
-        T * operator->() const;
+        T & operator* () const;
+        T * operator-> () const;
+        bool operator== (const const_iterator &) const;
+        bool operator!= (const const_iterator &) const;
     };
 
     iterator & begin();
@@ -74,13 +78,41 @@ typename Qontainer<T>::const_iterator & Qontainer<T>::cend() const { return cons
 template <class T>
 Qontainer<T>::iterator::iterator(T * d) : p(d) { }
 template <class T>
-typename Qontainer<T>::iterator & Qontainer<T>::iterator::operator++ () { p++; return *this; }
+typename Qontainer<T>::iterator & Qontainer<T>::iterator::operator++ () { ++p; return *this; }
 template <class T>
-typename Qontainer<T>::iterator Qontainer<T>::iterator::operator++ (int) { iterator temp (* this); p++; return temp; }
-
+typename Qontainer<T>::iterator Qontainer<T>::iterator::operator++ (int) { iterator temp (*this); ++p; return temp; }
+template <class T>
+typename Qontainer<T>::iterator & Qontainer<T>::iterator::operator-- () { --p; return *this; }
+template <class T>
+typename Qontainer<T>::iterator Qontainer<T>::iterator::operator-- (int) { iterator temp (*this); --p; return temp; }
+template <class T>
+T & Qontainer<T>::iterator::operator*() const { return *p; }
+template <class T>
+T * Qontainer<T>::iterator::operator->() const { return p; }
+template <class T>
+bool Qontainer<T>::iterator::operator== (const iterator & i) const { return p == i.p; }
+template <class T>
+bool Qontainer<T>::iterator::operator!= (const iterator & i) const { return p != i.p; }
 
 template <class T>
 Qontainer<T>::const_iterator::const_iterator(const T * d) : p(d) { }
+template <class T>
+typename Qontainer<T>::const_iterator & Qontainer<T>::const_iterator::operator++ () { ++p; return *this; }
+template <class T>
+typename Qontainer<T>::const_iterator Qontainer<T>::const_iterator::operator++ (int) { const_iterator temp (*this); ++p; return temp; }
+template <class T>
+typename Qontainer<T>::const_iterator & Qontainer<T>::const_iterator::operator-- () { --p; return *this; }
+template <class T>
+typename Qontainer<T>::const_iterator Qontainer<T>::const_iterator::operator-- (int) { const_iterator temp (*this); --p; return temp; }
+template <class T>
+T & Qontainer<T>::const_iterator::operator* () const { return *p; }
+template <class T>
+T * Qontainer<T>::const_iterator::operator->() const { return p; }
+template <class T>
+bool Qontainer<T>::const_iterator::operator== (const const_iterator & i) const { return p == i.p; }
+template <class T>
+bool Qontainer<T>::const_iterator::operator!= (const const_iterator & i) const { return p != i.p; }
+
 
 
 #endif // QONTAINER_H
