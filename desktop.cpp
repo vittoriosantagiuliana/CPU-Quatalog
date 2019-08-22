@@ -6,6 +6,8 @@ Desktop::Desktop(const int manufacturer, const std::string & model, const int so
     //    throw CoresException(cores);
 }
 
+Desktop * Desktop::clone() const { return new Desktop (*this);}
+
 void Desktop::setEccMemorySupport(const bool i) {
     eccMemorySupport = i;
 }

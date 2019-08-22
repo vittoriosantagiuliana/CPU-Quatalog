@@ -6,6 +6,8 @@ Mobile::Mobile(int manufacturer, const std::string & model, int socket, int year
     //    throw tdpException(50);
 }
 
+Mobile * Mobile::clone() const { return new Mobile(*this); }
+
 void Mobile::setEccMemorySupport(const bool) { }
 
 const std::string & Mobile::getSocket() const {

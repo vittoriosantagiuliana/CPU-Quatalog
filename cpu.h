@@ -27,7 +27,7 @@ public:
     static const std::map<const int, const std::string> manufacturers;
     //static const std::map<const int, const std::string> sockets;
 
-    /////////////////const CPU & operator= (const CPU &);
+    virtual CPU * clone() const = 0;
 
     // getters
     const std::string & getChipManufacturer() const;

@@ -3,6 +3,8 @@
 Server::Server(int manufacturer, const std::string & model, int socket, int year, int cores, int threads, int nm, int w, bool bits) : CPU(manufacturer, model, socket, year, cores, threads, nm, w, bits, true)
 { }
 
+Server * Server::clone() const { return new Server(*this); }
+
 void Server::setEccMemorySupport(const bool) { }
 
 const std::string & Server::getSocket() const {

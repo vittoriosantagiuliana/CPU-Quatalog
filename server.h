@@ -10,6 +10,7 @@ private:
     void setEccMemorySupport(const bool) override;
 public:
     Server(int manufacturer, const std::string & model, int socket, int year, int cores, int threads, int nm, int w, bool bits);
+    virtual Server * clone() const override;
 
     virtual const std::string & getSocket() const override;
     virtual void setSocket(const int) override;

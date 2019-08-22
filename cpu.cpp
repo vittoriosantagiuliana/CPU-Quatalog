@@ -4,7 +4,6 @@ const std::map <const int, const std::string> CPU::manufacturers ( { std::pair <
 
 CPU::CPU (const int manufacturer, const std::string & model, const int socket, const int year, const int cores, const int threads, const int nm, const int w, const bool bits, const bool ecc) : chipManufacturer(manufacturer), modelName(model), socket(socket), releaseYear(year), coreCount(cores), threadCount(threads), manufacturingProcess(nm), TDP(w), x86_64(bits), eccMemorySupport(ecc) {
     //manufacturer exception
-    //thread count exception
 }
 
 // getters

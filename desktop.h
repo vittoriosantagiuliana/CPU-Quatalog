@@ -8,6 +8,7 @@ class Desktop : public CPU
 {
 public:
     Desktop(const int manufacturer, const std::string & model, const int socket, const int year, const int cores, const int threads, const int nm, const int w, const bool bits, const bool ecc);
+    virtual Desktop * clone() const override;
 
     void setEccMemorySupport(const bool) override;
     virtual const std::string & getSocket() const override;
