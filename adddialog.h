@@ -8,7 +8,7 @@
 #include "mobile.h"
 #include "server.h"
 
-#include <QWidget>
+#include <QDialog>
 #include <QCheckBox>
 #include <QComboBox>
 #include <QGroupBox>
@@ -19,10 +19,13 @@
 #include <QRadioButton>
 #include <QSpinBox>
 
-class AddWidget : public QWidget
+class AddDialog : public QDialog
 {
     Q_OBJECT
 private:
+    QGroupBox * typeGB;
+    QGroupBox * manufacturerGB;
+
     QRadioButton * mobileRBtn, * desktopRBtn, * serverRBtn;
     QRadioButton * manufacturerRBtn;
     QLineEdit * modelLE;
@@ -46,9 +49,6 @@ private:
     QPushButton * addBtn;
     QPushButton * cancelBtn;
 
-    QGroupBox * typeGB;
-    QGroupBox * manufacturerGB;
-
     QHBoxLayout * typeLayout;
     QHBoxLayout * manufacturerLayout;
     QHBoxLayout * columnsLayout;
@@ -58,15 +58,17 @@ private:
     QVBoxLayout * mainLayout;
 
 public:
-    explicit AddWidget(QWidget *parent = nullptr);
+    explicit AddDialog(QWidget * parent = nullptr);
 
 signals:
     void created(CPU *);
 
-public slots:
+private slots:
     void setMobileParameters(bool);
     void setDesktopParameters(bool);
     void setServerParameters(bool);
+
+public slots:
     void createCpu();
 };
 

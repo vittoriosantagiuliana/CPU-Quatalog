@@ -21,6 +21,7 @@ public:
 signals:
 
 public slots:
+    void addCpu(CPU * c);
 };
 
 #endif // TABLEADAPTER_H

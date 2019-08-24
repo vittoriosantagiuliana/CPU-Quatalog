@@ -25,7 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-        addwidget.cpp \
+        adddialog.cpp \
         cpu.cpp \
         desktop.cpp \
         exceptions.cpp \
@@ -38,7 +38,7 @@ SOURCES += \
         tableadapter.cpp
 
 HEADERS += \
-        addwidget.h \
+        adddialog.h \
         cpu.h \
         deepptr.h \
         desktop.h \

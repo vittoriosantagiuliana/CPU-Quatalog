@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "adddialog.h"
 #include "tableadapter.h"
 
 #include <QMainWindow>
@@ -30,6 +31,10 @@ private:
 public:
     MainWindow(QWidget * parent = nullptr);
     ~MainWindow();
+signals:
+    void addCpu(CPU *);
+public slots:
+    void addDialog();
 };
 
 #endif // MAINWINDOW_H

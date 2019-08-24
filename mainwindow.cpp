@@ -9,7 +9,7 @@ MainWindow::MainWindow (QWidget * parent) :
     editButton(new QPushButton("Edit", mainWidget)),
     removeButton(new QPushButton("Delete", mainWidget)),
     cpuList(new QTableView(mainWidget)),
-    cpuModel(new TableAdapter(this))
+    //cpuModel(new TableAdapter(this))
 {
     topButtonsLayout->addWidget(addItemButton);
     topButtonsLayout->addWidget(editButton);
@@ -24,6 +24,14 @@ MainWindow::MainWindow (QWidget * parent) :
     mainWidget->setLayout(mainLayout);
     setCentralWidget(mainWidget);
     setWindowTitle("CPU Qatalog");
+
+    connect(this, SIGNAL(addCpu(CPU *)), cpuList, SLOT(addCpu(CPU *)));
+    connect(addItemButton, SIGNAL(clicked()), this, SLOT(addDialog()));
 }
 
 MainWindow::~MainWindow() { }
+
+void MainWindow::addDialog() {
+    AddDialog add(this);
+    add.exec();
+}

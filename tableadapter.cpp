@@ -63,8 +63,10 @@ QVariant TableAdapter::headerData(int section, Qt::Orientation orientation, int 
         case 9:
             return QString("ECC memory support");
         default:
-            return QString();
+            return QString(section);
         }
     return QVariant();
 }
+
+void TableAdapter::addCpu(CPU * c) { model->pushBack(*c); }
 
