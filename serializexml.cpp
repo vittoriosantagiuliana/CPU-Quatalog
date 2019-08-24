@@ -19,13 +19,13 @@ void SerializeXML::write(const Qontainer<DeepPtr<CPU>> & v) const
     writer.writeStartDocument();
     writer.writeStartElement("root"); //apre un tag Root
 
-    if(!v.isEmpty())
+    if(!v.empty())
     {
         for(auto cit = v.cbegin(); cit != v.cend(); ++cit)
         {
-            if(dynamic_cast<Mobile*>(&(**cit)))
+            if(dynamic_cast<const Mobile*>(&(**cit)))
             {
-                const Mobile & mobile = static_cast<Mobile &>(**cit);
+                const Mobile & mobile = static_cast<const Mobile &>(**cit);
                 writer.writeStartElement("Mobile");
 
                 writer.writeStartElement("chipManufacturer");
@@ -69,55 +69,55 @@ void SerializeXML::write(const Qontainer<DeepPtr<CPU>> & v) const
                 writer.writeEndElement();
 
                 writer.writeEndElement();
-                }
-                else if(dynamic_cast<Server*>(&(**cit))){
-                    const Server & server = static_cast<Server &>(**cit);
-                    writer.writeStartElement("Server");
+            }
+            else if(dynamic_cast<const Server*>(&(**cit))){
+                const Server & server = static_cast<const Server &>(**cit);
+                writer.writeStartElement("Server");
 
-                    writer.writeStartElement("chipManufacturer");
-                    writer.writeCharacters(QString::fromStdString(server.getChipManufacturer()));
-                    writer.writeEndElement();
+                writer.writeStartElement("chipManufacturer");
+                writer.writeCharacters(QString::fromStdString(server.getChipManufacturer()));
+                writer.writeEndElement();
 
-                    writer.writeStartElement("modelName");
-                    writer.writeCharacters(QString::fromStdString(server.getModelName()));
-                    writer.writeEndElement();
+                writer.writeStartElement("modelName");
+                writer.writeCharacters(QString::fromStdString(server.getModelName()));
+                writer.writeEndElement();
 
-                    writer.writeStartElement("socket");
-                    writer.writeCharacters(QString::fromStdString(server.getSocket()));
-                    writer.writeEndElement();
+                writer.writeStartElement("socket");
+                writer.writeCharacters(QString::fromStdString(server.getSocket()));
+                writer.writeEndElement();
 
-                    writer.writeStartElement("releaseYear");
-                    writer.writeCharacters(QString::number(server.getReleaseYear()));
-                    writer.writeEndElement();
+                writer.writeStartElement("releaseYear");
+                writer.writeCharacters(QString::number(server.getReleaseYear()));
+                writer.writeEndElement();
 
-                    writer.writeStartElement("coreCount");
-                    writer.writeCharacters(QString::number(server.getCoreCount()));
-                    writer.writeEndElement();
+                writer.writeStartElement("coreCount");
+                writer.writeCharacters(QString::number(server.getCoreCount()));
+                writer.writeEndElement();
 
-                    writer.writeStartElement("threadCount");
-                    writer.writeCharacters(QString::number(server.getThreadCount()));
-                    writer.writeEndElement();
+                writer.writeStartElement("threadCount");
+                writer.writeCharacters(QString::number(server.getThreadCount()));
+                writer.writeEndElement();
 
-                    writer.writeStartElement("manufacturingProcess");
-                    writer.writeCharacters(QString::number(server.getManufacturingProcess()));
-                    writer.writeEndElement();
+                writer.writeStartElement("manufacturingProcess");
+                writer.writeCharacters(QString::number(server.getManufacturingProcess()));
+                writer.writeEndElement();
 
-                    writer.writeStartElement("TDP");
-                    writer.writeCharacters(QString::number(server.getTdpRating()));
-                    writer.writeEndElement();
+                writer.writeStartElement("TDP");
+                writer.writeCharacters(QString::number(server.getTdpRating()));
+                writer.writeEndElement();
 
-                    writer.writeStartElement("x86_64");
-                    writer.writeCharacters(server.is64bit()? "true": "false");
-                    writer.writeEndElement();
+                writer.writeStartElement("x86_64");
+                writer.writeCharacters(server.is64bit()? "true": "false");
+                writer.writeEndElement();
 
-                    writer.writeStartElement("eccMemorySupport");
-                    writer.writeCharacters(server.getEccMemorySupport()? "true": "false");
-                    writer.writeEndElement();
+                writer.writeStartElement("eccMemorySupport");
+                writer.writeCharacters(server.getEccMemorySupport()? "true": "false");
+                writer.writeEndElement();
 
-                    writer.writeEndElement();
-                }
-            else if(dynamic_cast<Desktop*>(&(**cit))){
-                const Desktop & desktop = static_cast<Desktop &>(**cit);
+                writer.writeEndElement();
+            }
+            else if(dynamic_cast<const Desktop*>(&(**cit))) {
+                const Desktop & desktop = static_cast<const Desktop &>(**cit);
                 writer.writeStartElement("Desktop");
 
                 writer.writeStartElement("chipManufacturer");
@@ -162,14 +162,13 @@ void SerializeXML::write(const Qontainer<DeepPtr<CPU>> & v) const
 
                 writer.writeEndElement();
             }
-            }
         }
         writer.writeEndElement(); //chiude root
         writer.writeEndDocument();
 
-        if(!file.commit())
+        //if(!file.commit())
             //throw Exception("Failed write on XML file");
-
+    }
 
 }
 

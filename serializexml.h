@@ -1,11 +1,12 @@
 #ifndef SERIALIZEXML_H
 #define SERIALIZEXML_H
 
+#include "deepptr.h"
 #include "qontainer.h"
 #include "cpu.h"
+#include "desktop.h"
 #include "mobile.h"
 #include "server.h"
-#include "desktop.h"
 
 #include <QString>
 #include <QFile>
