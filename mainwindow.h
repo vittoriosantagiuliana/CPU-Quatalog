@@ -1,27 +1,31 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "tableadapter.h"
+
 #include <QMainWindow>
 #include <QLayout>
 #include <QPushButton>
 #include <QFileDialog>
-#include <QListWidget>
+#include <QTableView>
 #include <QDockWidget>
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 private:
+    QWidget * mainWidget;
+
     QVBoxLayout * mainLayout;
     QHBoxLayout * topButtonsLayout;
 
-    QWidget * mainWidget;
-
     QPushButton * addItemButton;
-    QPushButton * removeButton;
     QPushButton * editButton;
+    QPushButton * removeButton;
 
-    QListView * cpuList;
+    QTableView * cpuList;
+
+    TableAdapter * cpuModel;
 
 public:
     MainWindow(QWidget * parent = nullptr);

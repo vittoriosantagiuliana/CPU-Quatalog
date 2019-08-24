@@ -32,8 +32,10 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         mobile.cpp \
+        model.cpp \
         serializexml.cpp \
-        server.cpp
+        server.cpp \
+        tableadapter.cpp
 
 HEADERS += \
         addwidget.h \
@@ -43,9 +45,11 @@ HEADERS += \
         exceptions.h \
         mainwindow.h \
         mobile.h \
+        model.h \
         qontainer.h \
         serializexml.h \
-        server.h
+        server.h \
+        tableadapter.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

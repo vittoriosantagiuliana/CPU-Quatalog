@@ -1,9 +1,6 @@
 #include "serializexml.h"
 
-SerializeXML::SerializeXML(const  QString & path) : filePath(path)
-{
-
-}
+SerializeXML::SerializeXML(const  QString & path) : filePath(path) { }
 
 void SerializeXML::write(const Qontainer<DeepPtr<CPU>> & v) const
 {

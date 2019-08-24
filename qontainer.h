@@ -28,6 +28,8 @@ public:
     const T & back () const;
     T & front();
     T & back();
+    const T & operator[](unsigned int) const;
+    T & operator[](unsigned int);
 
 
     class iterator
@@ -37,14 +39,22 @@ public:
         T * p;
         iterator (T * = nullptr);
     public:
-        iterator & operator++ ();
-        iterator operator++ (int);
-        iterator & operator-- ();
-        iterator operator-- (int);
-        T & operator* () const;
-        T * operator-> () const;
-        bool operator== (const iterator &) const;
-        bool operator!= (const iterator &) const;
+        typedef std::forward_iterator_tag iterator_category;
+        typedef iterator self_type;
+        typedef T value_type;
+        typedef T& reference;
+        typedef T* pointer;
+        typedef int difference_type;
+        iterator & operator++();
+        iterator operator++(int);
+        iterator & operator--();
+        iterator operator--(int);
+        iterator operator+(int) const;
+        iterator operator-(int) const;
+        T & operator*() const;
+        T * operator->() const;
+        bool operator==(const iterator &) const;
+        bool operator!=(const iterator &) const;
     };
 
     class const_iterator
@@ -58,6 +68,8 @@ public:
         const_iterator operator++ (int);
         const_iterator & operator-- ();
         const_iterator operator-- (int);
+        const_iterator operator+(int) const;
+        const_iterator operator-(int) const;
         const T & operator* () const;
         const T * operator-> () const;
         bool operator== (const const_iterator &) const;
@@ -66,7 +78,8 @@ public:
 
     iterator insert(iterator, const T &);
     iterator erase(iterator);
-    iterator search(const T &) const;
+    const_iterator search(const T &) const;
+    iterator search(const T &);
 
     iterator begin();
     iterator end();
@@ -108,13 +121,19 @@ template <class T>
 T & Qontainer<T>::back() { return q[endIndex - 1]; }
 
 template <class T>
+const T & Qontainer<T>::operator[](unsigned int i) const { return q[i]; }
+
+template <class T>
+T & Qontainer<T>::operator[](unsigned int i) { return q[i]; }
+
+template <class T>
 void Qontainer<T>::push_back(const T & i) {
     if (!(totalSize > endIndex)) {
         T * temp = q;
         q = resize(totalSize *= 2);
         delete [] temp;
     }
-    q[endIndex++] = &i;
+    q[endIndex++] = i;
 }
 
 template <class T>
@@ -154,12 +173,19 @@ typename Qontainer<T>::iterator Qontainer<T>::erase(iterator i) {
         std::copy(i + 1, end(), i);
         --endIndex;
     }
-
+    return i;
 }
 
 template <class T>
-typename Qontainer<T>::iterator Qontainer<T>::search(const T & d) const {
-    for (auto it = begin(); it != end(); ++it)
+typename Qontainer<T>::const_iterator Qontainer<T>::search(const T & d) const {
+    for (const_iterator it = cbegin(); it != cend(); ++it)
+        if (*it == d)
+            return it;
+}
+
+template <class T>
+typename Qontainer<T>::iterator Qontainer<T>::search(const T & d) {
+    for (iterator it = begin(); it != end(); ++it)
         if (*it == d)
             return it;
 }
@@ -188,6 +214,10 @@ typename Qontainer<T>::iterator & Qontainer<T>::iterator::operator-- () { --p; r
 template <class T>
 typename Qontainer<T>::iterator Qontainer<T>::iterator::operator-- (int) { iterator temp (*this); --p; return temp; }
 template <class T>
+typename Qontainer<T>::iterator Qontainer<T>::iterator::operator+(int i) const { return iterator(p + i); }
+template <class T>
+typename Qontainer<T>::iterator Qontainer<T>::iterator::operator-(int i) const { return iterator(p - i); }
+template <class T>
 T & Qontainer<T>::iterator::operator*() const { return *p; }
 template <class T>
 T * Qontainer<T>::iterator::operator->() const { return p; }
@@ -206,6 +236,10 @@ template <class T>
 typename Qontainer<T>::const_iterator & Qontainer<T>::const_iterator::operator-- () { --p; return *this; }
 template <class T>
 typename Qontainer<T>::const_iterator Qontainer<T>::const_iterator::operator-- (int) { const_iterator temp (*this); --p; return temp; }
+template <class T>
+typename Qontainer<T>::const_iterator Qontainer<T>::const_iterator::operator+(int i) const { return const_iterator(p + i); }
+template <class T>
+typename Qontainer<T>::const_iterator Qontainer<T>::const_iterator::operator-(int i) const { return const_iterator(p - i); }
 template <class T>
 const T & Qontainer<T>::const_iterator::operator* () const { return *p; }
 template <class T>

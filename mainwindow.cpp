@@ -1,29 +1,29 @@
 #include "mainwindow.h"
 
-MainWindow::MainWindow (QWidget * parent) : QMainWindow(parent)
+MainWindow::MainWindow (QWidget * parent) :
+    QMainWindow(parent),
+    mainWidget(new QWidget(this)),
+    mainLayout(new QVBoxLayout(mainWidget)),
+    topButtonsLayout(new QHBoxLayout(mainWidget)),
+    addItemButton(new QPushButton("Add a new CPU model", mainWidget)),
+    editButton(new QPushButton("Edit", mainWidget)),
+    removeButton(new QPushButton("Delete", mainWidget)),
+    cpuList(new QTableView(mainWidget)),
+    cpuModel(new TableAdapter(this))
 {
-    addItemButton = new QPushButton("Add a new CPU model");
-    editButton = new QPushButton("Edit");
-    removeButton = new QPushButton("Delete");
-
-    topButtonsLayout = new QHBoxLayout();
     topButtonsLayout->addWidget(addItemButton);
     topButtonsLayout->addWidget(editButton);
     topButtonsLayout->addWidget(removeButton);
 
-    cpuList = new QListWidget();
+    cpuList->setModel(cpuModel);
+    cpuList->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-    mainLayout = new QVBoxLayout(this);
     mainLayout->addLayout(topButtonsLayout);
     mainLayout->addWidget(cpuList);
     
-    setWindowTitle("CPU Qatalog");
-    mainWidget = new QWidget();
     mainWidget->setLayout(mainLayout);
     setCentralWidget(mainWidget);
+    setWindowTitle("CPU Qatalog");
 }
 
-MainWindow::~MainWindow()
-{
-
-}
+MainWindow::~MainWindow() { }

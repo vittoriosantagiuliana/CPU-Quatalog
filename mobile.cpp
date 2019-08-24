@@ -2,8 +2,8 @@
 
 Mobile::Mobile(int manufacturer, const std::string & model, int socket, int year, int cores, int threads, int nm, int w, bool bits) : CPU(manufacturer, model, socket, year, cores, threads, nm, w, bits, false)
 {
-    //if (W > 50)
-    //    throw tdpException(50);
+    if (w > 50)
+        throw TDPException("50");
 }
 
 Mobile * Mobile::clone() const { return new Mobile(*this); }
