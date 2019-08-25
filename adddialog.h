@@ -59,6 +59,7 @@ private:
 
 public:
     explicit AddDialog(QWidget * parent = nullptr);
+    ~AddDialog();
 
 signals:
     void created(CPU *);

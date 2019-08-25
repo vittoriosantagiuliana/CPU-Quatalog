@@ -7,7 +7,6 @@
 
 class TableAdapter : public QAbstractTableModel
 {
-    //Q_OBJECT
 private:
     Model * model;
 public:
@@ -18,10 +17,8 @@ public:
     virtual QVariant data(const QModelIndex &, int role = Qt::DisplayRole) const override;
     virtual QVariant headerData(int section, Qt::Orientation orientation = Qt::Horizontal, int role = Qt::DisplayRole) const override;
 
-signals:
-
-public slots:
-    void addCpu(CPU * c);
+    void addCpu(CPU *);
+    void removeCpu(int);
 };
 
 #endif // TABLEADAPTER_H

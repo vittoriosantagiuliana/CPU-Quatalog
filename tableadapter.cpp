@@ -1,6 +1,6 @@
 #include "tableadapter.h"
 
-TableAdapter::TableAdapter(QObject * parent) : QAbstractTableModel(parent), model(new Model()) { }
+TableAdapter::TableAdapter(QObject * parent) : QAbstractTableModel(parent), model(new Model()) { connect(parent, SIGNAL(addCpu(CPU *)), this, SLOT(addCpu(CPU *))); }
 
 TableAdapter::~TableAdapter() { }
 
@@ -68,5 +68,14 @@ QVariant TableAdapter::headerData(int section, Qt::Orientation orientation, int 
     return QVariant();
 }
 
-void TableAdapter::addCpu(CPU * c) { model->pushBack(*c); }
+void TableAdapter::addCpu(CPU * c) {
+    beginInsertRows(QModelIndex(), rowCount(), rowCount());
+    model->pushBack(*c);
+    endInsertRows();
+}
 
+void TableAdapter::removeCpu(int i) {
+    beginRemoveRows(QModelIndex(), i, i);
+    model->remove(static_cast<unsigned int>(i));
+    endRemoveRows();
+}

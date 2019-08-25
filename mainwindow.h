@@ -31,10 +31,13 @@ private:
 public:
     MainWindow(QWidget * parent = nullptr);
     ~MainWindow();
-signals:
-    void addCpu(CPU *);
+
+private slots:
+    void removeCpu();
+
 public slots:
     void addDialog();
+    void addCpu(CPU *);
 };
 
 #endif // MAINWINDOW_H

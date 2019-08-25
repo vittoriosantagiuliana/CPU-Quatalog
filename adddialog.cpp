@@ -114,8 +114,8 @@ AddDialog::AddDialog(QWidget * parent) :
     threadLabel(new QLabel("Threads per core")),
     processLabel(new QLabel("Manufacturing process")),
     tdpLabel(new QLabel("Rated TDP")),
-    addBtn(new QPushButton("Add")),
-    cancelBtn(new QPushButton("Calcel")),
+    addBtn(new QPushButton("Add", this)),
+    cancelBtn(new QPushButton("Calcel", this)),
     typeLayout(new QHBoxLayout()),
     manufacturerLayout(new QHBoxLayout()),
     columnsLayout(new QHBoxLayout()),
@@ -170,12 +170,13 @@ AddDialog::AddDialog(QWidget * parent) :
     mainLayout->addWidget(bitsCB);
     mainLayout->addWidget(eccCB);
     mainLayout->addLayout(actionsLayout);
-
     connect(mobileRBtn, SIGNAL(toggled(bool)), this, SLOT(setMobileParameters(bool)));
     connect(desktopRBtn, SIGNAL(toggled(bool)), this, SLOT(setDesktopParameters(bool)));
     connect(serverRBtn, SIGNAL(toggled(bool)), this, SLOT(setServerParameters(bool)));
-    connect(this, SIGNAL(created(CPU *)), parent, SIGNAL(addCpu(CPU *)));
+    connect(this, SIGNAL(created(CPU *)), parent, SLOT(addCpu(CPU *)));
     connect(this, SIGNAL(accepted()), this, SLOT(createCpu()));
-    connect(addBtn, SIGNAL(clicked()), this, SLOT(accepted()));
-    connect(cancelBtn, SIGNAL(clicked()), this, SLOT(rejected()));
+    connect(addBtn, SIGNAL(clicked()), this, SLOT(accept()));
+    connect(cancelBtn, SIGNAL(clicked()), this, SLOT(reject()));
 }
+
+AddDialog::~AddDialog() { delete [] manufacturerRBtn; }
