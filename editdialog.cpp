@@ -31,7 +31,7 @@ EditDialog::EditDialog(CPU *c, QWidget *parent) : QDialog(parent),
                                                   socketLabel(new QLabel("Socket")),
                                                   yearLabel(new QLabel("Release year")),
                                                   coreLabel(new QLabel("Number of cores")),
-                                                  threadLabel(new QLabel("Threads per core")),
+                                                  threadLabel(new QLabel("Number of threads")),
                                                   processLabel(new QLabel("Manufacturing process")),
                                                   tdpLabel(new QLabel("Rated TDP")),
                                                   editBtn(new QPushButton("Edit", this)),
@@ -45,6 +45,8 @@ EditDialog::EditDialog(CPU *c, QWidget *parent) : QDialog(parent),
 {
     for (auto pair : CPU::manufacturers)
         manufacturerCB->addItem(QString::fromStdString(pair.second));
+
+    manufacturerCB->setCurrentIndex(cpu->getChipManufacturerId());
 
     modelLE->setText(QString::fromStdString(cpu->getModelName()));
 
@@ -73,18 +75,20 @@ EditDialog::EditDialog(CPU *c, QWidget *parent) : QDialog(parent),
         for (auto pair : Server::sockets)
             socketCB->addItem(QString::fromStdString(pair.second));
     }
+    socketCB->setCurrentIndex(cpu->getSocketId());
 
-    yearSB->setValue(cpu->getReleaseYear());
     yearSB->setRange(1985, 2020);
+    yearSB->setValue(cpu->getReleaseYear());
 
     coreSB->setValue(cpu->getCoreCount());
     threadSB->setValue(cpu->getThreadCount());
 
-    processSB->setValue(cpu->getManufacturingProcess());
     processSB->setRange(5, 1000);
+    processSB->setValue(cpu->getManufacturingProcess());
 
     tdpSB->setValue(cpu->getTdpRating());
 
+    bitsCB->setChecked(cpu->is64bit());
     eccCB->setChecked(cpu->getEccMemorySupport());
 
     labelsLayout->addWidget(manufacturerLabel);

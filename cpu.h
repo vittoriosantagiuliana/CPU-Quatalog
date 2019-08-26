@@ -36,6 +36,7 @@ public:
     int getChipManufacturerId() const;
     const std::string &getModelName() const;
     virtual const std::string &getSocket() const = 0;
+    int getSocketId() const;
     int getReleaseYear() const;
     int getCoreCount() const;
     int getThreadCount() const;

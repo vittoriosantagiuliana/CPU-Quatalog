@@ -1,6 +1,6 @@
 #include "tableadapter.h"
 
-TableAdapter::TableAdapter(QObject *parent) : QAbstractTableModel(parent), model(new Model()) { connect(parent, SIGNAL(addCpu(CPU *)), this, SLOT(addCpu(CPU *))); }
+TableAdapter::TableAdapter(QObject *parent) : QAbstractTableModel(parent), model(new Model()) {}
 
 TableAdapter::~TableAdapter() {}
 

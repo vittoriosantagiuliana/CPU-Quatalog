@@ -25,6 +25,8 @@ int CPU::getChipManufacturerId() const { return chipManufacturer; }
 
 const std::string &CPU::getModelName() const { return modelName; }
 
+int CPU::getSocketId() const { return socket; }
+
 int CPU::getReleaseYear() const { return releaseYear; }
 
 int CPU::getCoreCount() const { return coreCount; }
