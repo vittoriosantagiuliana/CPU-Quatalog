@@ -18,26 +18,25 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 private:
-    QMenuBar * menuBar;
-    QMenu * fileMenu;
-    QAction * openAction, * saveAction, * exitAction;
+    QMenuBar *menuBar;
+    QMenu *fileMenu;
+    QAction *openAction, *saveAction, *exitAction;
 
-    QWidget * mainWidget;
+    QWidget *mainWidget;
 
-    QVBoxLayout * mainLayout;
-    QHBoxLayout * topButtonsLayout;
+    QVBoxLayout *mainLayout;
+    QHBoxLayout *topButtonsLayout;
 
-    QPushButton * addItemButton;
-    QPushButton * editButton;
-    QPushButton * removeButton;
+    QPushButton *addItemButton;
+    QPushButton *editButton;
+    QPushButton *removeButton;
 
-    QTableView * cpuList;
+    QTableView *cpuList;
 
-    TableAdapter * cpuModel;
+    TableAdapter *cpuModel;
 
 public:
-    MainWindow(QWidget * parent = nullptr);
-    ~MainWindow();
+    MainWindow(QWidget *parent = nullptr);
 
 private slots:
     void addCpu(CPU *);

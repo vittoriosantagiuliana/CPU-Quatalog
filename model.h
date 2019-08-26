@@ -13,10 +13,11 @@ class Model
 {
 private:
     Qontainer<DeepPtr<CPU>> data;
+
 public:
     unsigned int size() const;
     unsigned int width() const;
-    CPU * operator[](unsigned int) const;
+    CPU *operator[](unsigned int) const;
     void pushBack(CPU &);
     void remove(unsigned int);
     void clear();

@@ -18,10 +18,11 @@ class SerializeXML
 {
 private:
     QString filePath;
+
 public:
     SerializeXML(const QString &);
     void write(const Qontainer<DeepPtr<CPU>> &) const;
-    Qontainer<DeepPtr<CPU>> & read() const;
+    Qontainer<DeepPtr<CPU>> &read() const;
 };
 
 #endif // SERIALIZEXML_H

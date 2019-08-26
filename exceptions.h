@@ -9,6 +9,12 @@ public:
     SocketException(const std::string &);
 };
 
+class ManufacturerException : public std::out_of_range
+{
+public:
+    ManufacturerException(const std::string &);
+};
+
 class CoresException : public std::invalid_argument
 {
 public:
@@ -26,8 +32,5 @@ class FileException : public std::invalid_argument
 public:
     FileException(const std::string &);
 };
-
-
-
 
 #endif // EXCEPTIONS_H

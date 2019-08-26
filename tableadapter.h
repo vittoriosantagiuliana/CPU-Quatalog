@@ -6,11 +6,13 @@
 #include "editdialog.h"
 
 #include <QAbstractTableModel>
+#include <QMessageBox>
 
 class TableAdapter : public QAbstractTableModel
 {
 private:
-    Model * model;
+    Model *model;
+
 public:
     TableAdapter(QObject * = nullptr);
     ~TableAdapter() override;

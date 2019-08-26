@@ -1,14 +1,13 @@
 #include "serializexml.h"
 
-SerializeXML::SerializeXML(const  QString & path) : filePath(path) { }
+SerializeXML::SerializeXML(const QString &path) : filePath(path) {}
 
-void SerializeXML::write(const Qontainer<DeepPtr<CPU>> & model) const
+void SerializeXML::write(const Qontainer<DeepPtr<CPU>> &model) const
 {
     QSaveFile file(filePath);
 
-    if(!file.open(QIODevice::WriteOnly)) {
+    if (!file.open(QIODevice::WriteOnly))
         throw FileException("Error opening the file");
-    }
 
     QXmlStreamWriter writer(&file);
     writer.setAutoFormatting(true);
@@ -16,13 +15,13 @@ void SerializeXML::write(const Qontainer<DeepPtr<CPU>> & model) const
     writer.writeStartDocument();
     writer.writeStartElement("Qatalog");
 
-    if(!model.empty())
+    if (!model.empty())
     {
-        for(auto cit = model.cbegin(); cit != model.cend(); ++cit)
+        for (auto cit = model.cbegin(); cit != model.cend(); ++cit)
         {
-            if(dynamic_cast<const Mobile*>(&(**cit)))
+            if (dynamic_cast<const Mobile *>(&(**cit)))
             {
-                const Mobile & mobile = static_cast<const Mobile &>(**cit);
+                const Mobile &mobile = static_cast<const Mobile &>(**cit);
                 writer.writeStartElement("Mobile");
 
                 writer.writeStartElement("chipManufacturer");
@@ -58,13 +57,14 @@ void SerializeXML::write(const Qontainer<DeepPtr<CPU>> & model) const
                 writer.writeEndElement();
 
                 writer.writeStartElement("x86_64");
-                writer.writeCharacters(mobile.is64bit() ? "true": "false");
+                writer.writeCharacters(mobile.is64bit() ? "true" : "false");
                 writer.writeEndElement();
 
                 writer.writeEndElement();
             }
-            else if(dynamic_cast<const Server*>(&(**cit))){
-                const Server & server = static_cast<const Server &>(**cit);
+            else if (dynamic_cast<const Server *>(&(**cit)))
+            {
+                const Server &server = static_cast<const Server &>(**cit);
                 writer.writeStartElement("Server");
 
                 writer.writeStartElement("chipManufacturer");
@@ -100,13 +100,14 @@ void SerializeXML::write(const Qontainer<DeepPtr<CPU>> & model) const
                 writer.writeEndElement();
 
                 writer.writeStartElement("x86_64");
-                writer.writeCharacters(server.is64bit() ? "true": "false");
+                writer.writeCharacters(server.is64bit() ? "true" : "false");
                 writer.writeEndElement();
 
                 writer.writeEndElement();
             }
-            else if(dynamic_cast<const Desktop*>(&(**cit))) {
-                const Desktop & desktop = static_cast<const Desktop &>(**cit);
+            else if (dynamic_cast<const Desktop *>(&(**cit)))
+            {
+                const Desktop &desktop = static_cast<const Desktop &>(**cit);
                 writer.writeStartElement("Desktop");
 
                 writer.writeStartElement("chipManufacturer");
@@ -142,11 +143,11 @@ void SerializeXML::write(const Qontainer<DeepPtr<CPU>> & model) const
                 writer.writeEndElement();
 
                 writer.writeStartElement("x86_64");
-                writer.writeCharacters(desktop.is64bit() ? "true": "false");
+                writer.writeCharacters(desktop.is64bit() ? "true" : "false");
                 writer.writeEndElement();
 
                 writer.writeStartElement("eccMemorySupport");
-                writer.writeCharacters(desktop.getEccMemorySupport() ? "true": "false");
+                writer.writeCharacters(desktop.getEccMemorySupport() ? "true" : "false");
                 writer.writeEndElement();
 
                 writer.writeEndElement();
@@ -158,12 +159,11 @@ void SerializeXML::write(const Qontainer<DeepPtr<CPU>> & model) const
         if (!file.commit())
             throw FileException("Failed writing XML file");
     }
-
 }
 
-Qontainer<DeepPtr<CPU>> & SerializeXML::read() const
+Qontainer<DeepPtr<CPU>> &SerializeXML::read() const
 {
-    Qontainer<DeepPtr<CPU>> * model = new Qontainer<DeepPtr<CPU>>();
+    Qontainer<DeepPtr<CPU>> *model = new Qontainer<DeepPtr<CPU>>();
     QFile file(filePath);
 
     int chipManufacturer;
@@ -177,17 +177,17 @@ Qontainer<DeepPtr<CPU>> & SerializeXML::read() const
     bool x86_64;
     bool eccMemorySupport;
 
-    if(!file.open(QIODevice::ReadOnly))
+    if (!file.open(QIODevice::ReadOnly))
         throw FileException("Error opening file");
 
     QXmlStreamReader reader(&file);
-    if(reader.readNextStartElement())
+    if (reader.readNextStartElement())
     {
-        if(reader.name() == "Qatalog")
+        if (reader.name() == "Qatalog")
         {
-            while(reader.readNextStartElement())
+            while (reader.readNextStartElement())
             {
-                if(reader.name() == "Mobile")
+                if (reader.name() == "Mobile")
                 {
                     reader.readNextStartElement();
                     chipManufacturer = (reader.readElementText()).toInt();

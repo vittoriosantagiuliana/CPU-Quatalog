@@ -1,6 +1,8 @@
 #ifndef CPU_H
 #define CPU_H
 
+#include "exceptions.h"
+
 #include <map>
 #include <string>
 
@@ -21,19 +23,19 @@ protected:
     bool eccMemorySupport;
 
 public:
-    CPU(const int manufacturer, const std::string & model, const int socket, const int year, const int cores, const int threads, const int nm, const int w, const bool bits, const bool ecc);
+    CPU(const int manufacturer, const std::string &model, const int socket, const int year, const int cores, const int threads, const int nm, const int w, const bool bits, const bool ecc);
     virtual ~CPU() = default;
 
     static const std::map<const int, const std::string> manufacturers;
     //static const std::map<const int, const std::string> sockets;
 
-    virtual CPU * clone() const = 0;
+    virtual CPU *clone() const = 0;
 
     // getters
-    const std::string & getChipManufacturer() const;
+    const std::string &getChipManufacturer() const;
     int getChipManufacturerId() const;
-    const std::string & getModelName() const;
-    virtual const std::string & getSocket() const = 0;
+    const std::string &getModelName() const;
+    virtual const std::string &getSocket() const = 0;
     int getReleaseYear() const;
     int getCoreCount() const;
     int getThreadCount() const;
@@ -43,8 +45,8 @@ public:
     bool getEccMemorySupport() const;
 
     // setters
-    void setManufacturer (const int);
-    void setModelName (const std::string &);
+    void setManufacturer(const int);
+    void setModelName(const std::string &);
     virtual void setSocket(const int) = 0;
     void setReleaseYear(const int);
     virtual void setCoreCount(const int) = 0;

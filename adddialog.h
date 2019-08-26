@@ -8,13 +8,14 @@
 #include "mobile.h"
 #include "server.h"
 
-#include <QDialog>
 #include <QCheckBox>
 #include <QComboBox>
+#include <QDialog>
 #include <QGroupBox>
 #include <QLabel>
 #include <QLayout>
 #include <QLineEdit>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QRadioButton>
 #include <QSpinBox>
@@ -23,42 +24,42 @@ class AddDialog : public QDialog
 {
     Q_OBJECT
 private:
-    QGroupBox * typeGB;
-    QGroupBox * manufacturerGB;
+    QGroupBox *typeGB;
+    QGroupBox *manufacturerGB;
 
-    QRadioButton * mobileRBtn, * desktopRBtn, * serverRBtn;
-    QRadioButton * manufacturerRBtn;
-    QLineEdit * modelLE;
-    QComboBox * socketCB;
-    QSpinBox * yearSB;
-    QSpinBox * coreSB;
-    QSpinBox * threadSB;
-    QSpinBox * processSB;
-    QSpinBox * tdpSB;
-    QCheckBox * bitsCB;
-    QCheckBox * eccCB;
+    QRadioButton *mobileRBtn, *desktopRBtn, *serverRBtn;
+    QRadioButton *manufacturerRBtn;
+    QLineEdit *modelLE;
+    QComboBox *socketCB;
+    QSpinBox *yearSB;
+    QSpinBox *coreSB;
+    QSpinBox *threadSB;
+    QSpinBox *processSB;
+    QSpinBox *tdpSB;
+    QCheckBox *bitsCB;
+    QCheckBox *eccCB;
 
-    QLabel * modelLabel;
-    QLabel * socketLabel;
-    QLabel * yearLabel;
-    QLabel * coreLabel;
-    QLabel * threadLabel;
-    QLabel * processLabel;
-    QLabel * tdpLabel;
+    QLabel *modelLabel;
+    QLabel *socketLabel;
+    QLabel *yearLabel;
+    QLabel *coreLabel;
+    QLabel *threadLabel;
+    QLabel *processLabel;
+    QLabel *tdpLabel;
 
-    QPushButton * addBtn;
-    QPushButton * cancelBtn;
+    QPushButton *addBtn;
+    QPushButton *cancelBtn;
 
-    QHBoxLayout * typeLayout;
-    QHBoxLayout * manufacturerLayout;
-    QHBoxLayout * columnsLayout;
-    QVBoxLayout * labelsLayout;
-    QVBoxLayout * fieldsLayout;
-    QHBoxLayout * actionsLayout;
-    QVBoxLayout * mainLayout;
+    QHBoxLayout *typeLayout;
+    QHBoxLayout *manufacturerLayout;
+    QHBoxLayout *columnsLayout;
+    QVBoxLayout *labelsLayout;
+    QVBoxLayout *fieldsLayout;
+    QHBoxLayout *actionsLayout;
+    QVBoxLayout *mainLayout;
 
 public:
-    explicit AddDialog(QWidget * parent = nullptr);
+    explicit AddDialog(QWidget *parent = nullptr);
     ~AddDialog();
 
 signals:

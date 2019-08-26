@@ -1,17 +1,20 @@
 #include "tableadapter.h"
 
-TableAdapter::TableAdapter(QObject * parent) : QAbstractTableModel(parent), model(new Model()) { connect(parent, SIGNAL(addCpu(CPU *)), this, SLOT(addCpu(CPU *))); }
+TableAdapter::TableAdapter(QObject *parent) : QAbstractTableModel(parent), model(new Model()) { connect(parent, SIGNAL(addCpu(CPU *)), this, SLOT(addCpu(CPU *))); }
 
-TableAdapter::~TableAdapter() { }
+TableAdapter::~TableAdapter() {}
 
 int TableAdapter::rowCount(const QModelIndex &) const { return static_cast<int>(model->size()); }
 
 int TableAdapter::columnCount(const QModelIndex &) const { return static_cast<int>(model->width()); }
 
-QVariant TableAdapter::data(const QModelIndex & index, int role) const {
-    if (role == Qt::DisplayRole && index.isValid()) {
-        const CPU * c = (*model)[static_cast<unsigned int>(index.row())];
-        switch(index.column()) {
+QVariant TableAdapter::data(const QModelIndex &index, int role) const
+{
+    if (role == Qt::DisplayRole && index.isValid())
+    {
+        const CPU *c = (*model)[static_cast<unsigned int>(index.row())];
+        switch (index.column())
+        {
         case 0:
             return QString::fromStdString(c->getChipManufacturer());
         case 1:
@@ -39,9 +42,11 @@ QVariant TableAdapter::data(const QModelIndex & index, int role) const {
     return QVariant();
 }
 
-QVariant TableAdapter::headerData(int section, Qt::Orientation orientation, int role) const {
+QVariant TableAdapter::headerData(int section, Qt::Orientation orientation, int role) const
+{
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
-        switch (section) {
+        switch (section)
+        {
         case 0:
             return QString("Manufacturer");
         case 1:
@@ -68,31 +73,80 @@ QVariant TableAdapter::headerData(int section, Qt::Orientation orientation, int 
     return QVariant();
 }
 
-void TableAdapter::loadFile(const std::string & path) {
-    beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
-    model->clear();
-    endRemoveRows();
-    model->unserialize(path);
-    beginInsertRows(QModelIndex(), 0, rowCount() - 1);
-    endInsertRows();
+void TableAdapter::loadFile(const std::string &path)
+{
+    try
+    {
+        beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
+        model->clear();
+        endRemoveRows();
+        model->unserialize(path);
+        beginInsertRows(QModelIndex(), 0, rowCount() - 1);
+        endInsertRows();
+    }
+    catch (FileException &e)
+    {
+        QMessageBox msgBox;
+        msgBox.setText(QString::fromStdString(e.what()));
+        msgBox.exec();
+    }
+    catch (ManufacturerException &e)
+    {
+        QMessageBox msgBox;
+        msgBox.setText(QString::fromStdString(e.what()));
+        msgBox.exec();
+    }
+    catch (SocketException &e)
+    {
+        QMessageBox msgBox;
+        msgBox.setText(QString::fromStdString(e.what()));
+        msgBox.exec();
+    }
+    catch (CoresException &e)
+    {
+        QMessageBox msgBox;
+        msgBox.setText(QString::fromStdString(e.what()));
+        msgBox.exec();
+    }
+    catch (TDPException &e)
+    {
+        QMessageBox msgBox;
+        msgBox.setText(QString::fromStdString(e.what()));
+        msgBox.exec();
+    }
 }
 
-void TableAdapter::saveFile(const std::string & path) const { model->serialize(path); }
+void TableAdapter::saveFile(const std::string &path) const
+{
+    try
+    {
+        model->serialize(path);
+    }
+    catch (FileException &e)
+    {
+        QMessageBox msgBox;
+        msgBox.setText(QString::fromStdString(e.what()));
+        msgBox.exec();
+    }
+}
 
-void TableAdapter::addCpu(CPU * c) {
+void TableAdapter::addCpu(CPU *c)
+{
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
     model->pushBack(*c);
     endInsertRows();
 }
 
-void TableAdapter::editCpu(QModelIndex & i) {
+void TableAdapter::editCpu(QModelIndex &i)
+{
     int j = i.row();
     EditDialog edit((*model)[static_cast<unsigned int>(j)]);
     edit.exec();
     emit dataChanged(i, i);
 }
 
-void TableAdapter::removeCpu(int i) {
+void TableAdapter::removeCpu(int i)
+{
     beginRemoveRows(QModelIndex(), i, i);
     if (static_cast<unsigned int>(i) < model->size())
         model->remove(static_cast<unsigned int>(i));
