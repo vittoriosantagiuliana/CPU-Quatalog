@@ -17,141 +17,54 @@ void SerializeXML::write(const Qontainer<DeepPtr<CPU>> &model) const
 
     if (!model.empty())
     {
-        for (auto cit = model.cbegin(); cit != model.cend(); ++cit)
+        CPU * c = nullptr;
+        for (auto i = model.cbegin(); i != model.cend(); ++i)
         {
-            if (dynamic_cast<const Mobile *>(&(**cit)))
-            {
-                const Mobile &mobile = static_cast<const Mobile &>(**cit);
+            c = &(**i);
+
+            if (dynamic_cast<const Mobile *>(c))
                 writer.writeStartElement("Mobile");
-
-                writer.writeStartElement("chipManufacturer");
-                writer.writeCharacters(QString::number(mobile.getChipManufacturerId()));
-                writer.writeEndElement();
-
-                writer.writeStartElement("modelName");
-                writer.writeCharacters(QString::fromStdString(mobile.getModelName()));
-                writer.writeEndElement();
-
-                writer.writeStartElement("socket");
-                writer.writeCharacters(QString::fromStdString(mobile.getSocket()));
-                writer.writeEndElement();
-
-                writer.writeStartElement("releaseYear");
-                writer.writeCharacters(QString::number(mobile.getReleaseYear()));
-                writer.writeEndElement();
-
-                writer.writeStartElement("coreCount");
-                writer.writeCharacters(QString::number(mobile.getCoreCount()));
-                writer.writeEndElement();
-
-                writer.writeStartElement("threadCount");
-                writer.writeCharacters(QString::number(mobile.getThreadCount()));
-                writer.writeEndElement();
-
-                writer.writeStartElement("manufacturingProcess");
-                writer.writeCharacters(QString::number(mobile.getManufacturingProcess()));
-                writer.writeEndElement();
-
-                writer.writeStartElement("TDP");
-                writer.writeCharacters(QString::number(mobile.getTdpRating()));
-                writer.writeEndElement();
-
-                writer.writeStartElement("x86_64");
-                writer.writeCharacters(mobile.is64bit() ? "true" : "false");
-                writer.writeEndElement();
-
-                writer.writeEndElement();
-            }
-            else if (dynamic_cast<const Server *>(&(**cit)))
-            {
-                const Server &server = static_cast<const Server &>(**cit);
+            else if (dynamic_cast<const Server *>(c))
                 writer.writeStartElement("Server");
-
-                writer.writeStartElement("chipManufacturer");
-                writer.writeCharacters(QString::number(server.getChipManufacturerId()));
-                writer.writeEndElement();
-
-                writer.writeStartElement("modelName");
-                writer.writeCharacters(QString::fromStdString(server.getModelName()));
-                writer.writeEndElement();
-
-                writer.writeStartElement("socket");
-                writer.writeCharacters(QString::fromStdString(server.getSocket()));
-                writer.writeEndElement();
-
-                writer.writeStartElement("releaseYear");
-                writer.writeCharacters(QString::number(server.getReleaseYear()));
-                writer.writeEndElement();
-
-                writer.writeStartElement("coreCount");
-                writer.writeCharacters(QString::number(server.getCoreCount()));
-                writer.writeEndElement();
-
-                writer.writeStartElement("threadCount");
-                writer.writeCharacters(QString::number(server.getThreadCount()));
-                writer.writeEndElement();
-
-                writer.writeStartElement("manufacturingProcess");
-                writer.writeCharacters(QString::number(server.getManufacturingProcess()));
-                writer.writeEndElement();
-
-                writer.writeStartElement("TDP");
-                writer.writeCharacters(QString::number(server.getTdpRating()));
-                writer.writeEndElement();
-
-                writer.writeStartElement("x86_64");
-                writer.writeCharacters(server.is64bit() ? "true" : "false");
-                writer.writeEndElement();
-
-                writer.writeEndElement();
-            }
-            else if (dynamic_cast<const Desktop *>(&(**cit)))
-            {
-                const Desktop &desktop = static_cast<const Desktop &>(**cit);
+            else if (dynamic_cast<const Desktop *>(c))
                 writer.writeStartElement("Desktop");
 
-                writer.writeStartElement("chipManufacturer");
-                writer.writeCharacters(QString::number(desktop.getChipManufacturerId()));
-                writer.writeEndElement();
-
-                writer.writeStartElement("modelName");
-                writer.writeCharacters(QString::fromStdString(desktop.getModelName()));
-                writer.writeEndElement();
-
-                writer.writeStartElement("socket");
-                writer.writeCharacters(QString::fromStdString(desktop.getSocket()));
-                writer.writeEndElement();
-
-                writer.writeStartElement("releaseYear");
-                writer.writeCharacters(QString::number(desktop.getReleaseYear()));
-                writer.writeEndElement();
-
-                writer.writeStartElement("coreCount");
-                writer.writeCharacters(QString::number(desktop.getCoreCount()));
-                writer.writeEndElement();
-
-                writer.writeStartElement("threadCount");
-                writer.writeCharacters(QString::number(desktop.getThreadCount()));
-                writer.writeEndElement();
-
-                writer.writeStartElement("manufacturingProcess");
-                writer.writeCharacters(QString::number(desktop.getManufacturingProcess()));
-                writer.writeEndElement();
-
-                writer.writeStartElement("TDP");
-                writer.writeCharacters(QString::number(desktop.getTdpRating()));
-                writer.writeEndElement();
-
-                writer.writeStartElement("x86_64");
-                writer.writeCharacters(desktop.is64bit() ? "true" : "false");
-                writer.writeEndElement();
-
+            
+            writer.writeStartElement("chipManufacturerId");
+            writer.writeCharacters(QString::number(c->getChipManufacturerId()));
+            writer.writeEndElement();
+            writer.writeStartElement("modelName");
+            writer.writeCharacters(QString::fromStdString(c->getModelName()));
+            writer.writeEndElement();
+            writer.writeStartElement("socketId");
+            writer.writeCharacters(QString::number(c->getSocketId()));
+            writer.writeEndElement();
+            writer.writeStartElement("releaseYear");
+            writer.writeCharacters(QString::number(c->getReleaseYear()));
+            writer.writeEndElement();
+            writer.writeStartElement("coreCount");
+            writer.writeCharacters(QString::number(c->getCoreCount()));
+            writer.writeEndElement();
+            writer.writeStartElement("threadCount");
+            writer.writeCharacters(QString::number(c->getThreadCount()));
+            writer.writeEndElement();
+            writer.writeStartElement("manufacturingProcess");
+            writer.writeCharacters(QString::number(c->getManufacturingProcess()));
+            writer.writeEndElement();
+            writer.writeStartElement("tdpRating");
+            writer.writeCharacters(QString::number(c->getTdpRating()));
+            writer.writeEndElement();
+            writer.writeStartElement("x86_64");
+            writer.writeCharacters(c->is64bit() ? "true" : "false");
+            writer.writeEndElement();
+            if (const Desktop * d = dynamic_cast<const Desktop *>(c))
+            {
                 writer.writeStartElement("eccMemorySupport");
-                writer.writeCharacters(desktop.getEccMemorySupport() ? "true" : "false");
-                writer.writeEndElement();
-
+                writer.writeCharacters(d->getEccMemorySupport() ? "true" : "false");
                 writer.writeEndElement();
             }
+
+            writer.writeEndElement();
         }
         writer.writeEndElement();
         writer.writeEndDocument();
@@ -165,6 +78,7 @@ Qontainer<DeepPtr<CPU>> &SerializeXML::read() const
 {
     Qontainer<DeepPtr<CPU>> *model = new Qontainer<DeepPtr<CPU>>();
     QFile file(filePath);
+    int type = 0;
 
     int chipManufacturer;
     std::string modelName;
@@ -187,79 +101,48 @@ Qontainer<DeepPtr<CPU>> &SerializeXML::read() const
         {
             while (reader.readNextStartElement())
             {
+
                 if (reader.name() == "Mobile")
-                {
-                    reader.readNextStartElement();
-                    chipManufacturer = (reader.readElementText()).toInt();
-                    reader.readNextStartElement();
-                    modelName = (reader.readElementText()).toStdString();
-                    reader.readNextStartElement();
-                    socket = (reader.readElementText()).toInt();
-                    reader.readNextStartElement();
-                    releaseYear = (reader.readElementText()).toInt();
-                    reader.readNextStartElement();
-                    coreCount = (reader.readElementText()).toInt();
-                    reader.readNextStartElement();
-                    threadCount = (reader.readElementText()).toInt();
-                    reader.readNextStartElement();
-                    manufacturingProcess = (reader.readElementText()).toInt();
-                    reader.readNextStartElement();
-                    TDP = (reader.readElementText()).toInt();
-                    reader.readNextStartElement();
-                    x86_64 = reader.readElementText() == "true";
-                    reader.readNextStartElement();
-
-                    model->push_back(new Mobile(chipManufacturer, modelName, socket, releaseYear, coreCount, threadCount, manufacturingProcess, TDP, x86_64));
-                }
+                    type = 0;
                 else if (reader.name() == "Server")
-                {
-                    reader.readNextStartElement();
-                    chipManufacturer = (reader.readElementText()).toInt();
-                    reader.readNextStartElement();
-                    modelName = (reader.readElementText()).toStdString();
-                    reader.readNextStartElement();
-                    socket = (reader.readElementText()).toInt();
-                    reader.readNextStartElement();
-                    releaseYear = (reader.readElementText()).toInt();
-                    reader.readNextStartElement();
-                    coreCount = (reader.readElementText()).toInt();
-                    reader.readNextStartElement();
-                    threadCount = (reader.readElementText()).toInt();
-                    reader.readNextStartElement();
-                    manufacturingProcess = (reader.readElementText()).toInt();
-                    reader.readNextStartElement();
-                    TDP = (reader.readElementText()).toInt();
-                    reader.readNextStartElement();
-                    x86_64 = reader.readElementText() == "true";
-                    reader.readNextStartElement();
-
-                    model->push_back(new Server(chipManufacturer, modelName, socket, releaseYear, coreCount, threadCount, manufacturingProcess, TDP, x86_64));
-                }
+                    type = 1;
                 else if (reader.name() == "Desktop")
-                {
-                    reader.readNextStartElement();
-                    chipManufacturer = (reader.readElementText()).toInt();
-                    reader.readNextStartElement();
-                    modelName = (reader.readElementText()).toStdString();
-                    reader.readNextStartElement();
-                    socket = (reader.readElementText()).toInt();
-                    reader.readNextStartElement();
-                    releaseYear = (reader.readElementText()).toInt();
-                    reader.readNextStartElement();
-                    coreCount = (reader.readElementText()).toInt();
-                    reader.readNextStartElement();
-                    threadCount = (reader.readElementText()).toInt();
-                    reader.readNextStartElement();
-                    manufacturingProcess = (reader.readElementText()).toInt();
-                    reader.readNextStartElement();
-                    TDP = (reader.readElementText()).toInt();
-                    reader.readNextStartElement();
-                    x86_64 = reader.readElementText() == "true";
-                    reader.readNextStartElement();
+                    type = 2;
+
+                reader.readNextStartElement();
+                chipManufacturer = (reader.readElementText()).toInt();
+                reader.readNextStartElement();
+                modelName = (reader.readElementText()).toStdString();
+                reader.readNextStartElement();
+                socket = (reader.readElementText()).toInt();
+                reader.readNextStartElement();
+                releaseYear = (reader.readElementText()).toInt();
+                reader.readNextStartElement();
+                coreCount = (reader.readElementText()).toInt();
+                reader.readNextStartElement();
+                threadCount = (reader.readElementText()).toInt();
+                reader.readNextStartElement();
+                manufacturingProcess = (reader.readElementText()).toInt();
+                reader.readNextStartElement();
+                TDP = (reader.readElementText()).toInt();
+                reader.readNextStartElement();
+                x86_64 = reader.readElementText() == "true";
+                reader.readNextStartElement();
+
+                switch (type) {
+                case 0:
+                    model->push_back(new Mobile(chipManufacturer, modelName, socket, releaseYear, coreCount, threadCount, manufacturingProcess, TDP, x86_64));
+                    break;
+                case 1:
+                    model->push_back(new Server(chipManufacturer, modelName, socket, releaseYear, coreCount, threadCount, manufacturingProcess, TDP, x86_64));
+                    break;
+                case 2:
                     eccMemorySupport = reader.readElementText() == "true";
                     reader.readNextStartElement();
-
                     model->push_back(new Desktop(chipManufacturer, modelName, socket, releaseYear, coreCount, threadCount, manufacturingProcess, TDP, x86_64, eccMemorySupport));
+                    break;
+                default:
+                    break;
                 }
             }
         }
