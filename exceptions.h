@@ -21,6 +21,12 @@ public:
     TDPException(const std::string &);
 };
 
+class FileException : public std::invalid_argument
+{
+public:
+    FileException(const std::string &);
+};
+
 
 
 

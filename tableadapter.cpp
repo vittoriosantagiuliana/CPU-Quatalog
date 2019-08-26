@@ -68,14 +68,33 @@ QVariant TableAdapter::headerData(int section, Qt::Orientation orientation, int 
     return QVariant();
 }
 
+void TableAdapter::loadFile(const std::string & path) {
+    beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
+    model->clear();
+    endRemoveRows();
+    model->unserialize(path);
+    beginInsertRows(QModelIndex(), 0, rowCount() - 1);
+    endInsertRows();
+}
+
+void TableAdapter::saveFile(const std::string & path) const { model->serialize(path); }
+
 void TableAdapter::addCpu(CPU * c) {
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
     model->pushBack(*c);
     endInsertRows();
 }
 
+void TableAdapter::editCpu(QModelIndex & i) {
+    int j = i.row();
+    EditDialog edit((*model)[static_cast<unsigned int>(j)]);
+    edit.exec();
+    emit dataChanged(i, i);
+}
+
 void TableAdapter::removeCpu(int i) {
     beginRemoveRows(QModelIndex(), i, i);
-    model->remove(static_cast<unsigned int>(i));
+    if (static_cast<unsigned int>(i) < model->size())
+        model->remove(static_cast<unsigned int>(i));
     endRemoveRows();
 }

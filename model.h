@@ -19,6 +19,7 @@ public:
     CPU * operator[](unsigned int) const;
     void pushBack(CPU &);
     void remove(unsigned int);
+    void clear();
     void serialize(const std::string &) const;
     void unserialize(const std::string &);
 };

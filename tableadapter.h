@@ -2,6 +2,8 @@
 #define TABLEADAPTER_H
 
 #include "model.h"
+#include "serializexml.h"
+#include "editdialog.h"
 
 #include <QAbstractTableModel>
 
@@ -17,7 +19,10 @@ public:
     virtual QVariant data(const QModelIndex &, int role = Qt::DisplayRole) const override;
     virtual QVariant headerData(int section, Qt::Orientation orientation = Qt::Horizontal, int role = Qt::DisplayRole) const override;
 
+    void saveFile(const std::string &) const;
+    void loadFile(const std::string &);
     void addCpu(CPU *);
+    void editCpu(QModelIndex &);
     void removeCpu(int);
 };
 

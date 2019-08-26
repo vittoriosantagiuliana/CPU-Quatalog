@@ -5,6 +5,9 @@
 #include "tableadapter.h"
 
 #include <QMainWindow>
+#include <QAction>
+#include <QMenu>
+#include <QMenuBar>
 #include <QLayout>
 #include <QPushButton>
 #include <QFileDialog>
@@ -15,6 +18,10 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 private:
+    QMenuBar * menuBar;
+    QMenu * fileMenu;
+    QAction * openAction, * saveAction, * exitAction;
+
     QWidget * mainWidget;
 
     QVBoxLayout * mainLayout;
@@ -33,11 +40,14 @@ public:
     ~MainWindow();
 
 private slots:
+    void addCpu(CPU *);
+    void editCpu();
     void removeCpu();
 
 public slots:
+    void openFile();
+    void saveFile();
     void addDialog();
-    void addCpu(CPU *);
 };
 
 #endif // MAINWINDOW_H

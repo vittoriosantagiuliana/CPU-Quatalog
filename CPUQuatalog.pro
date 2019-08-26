@@ -28,6 +28,7 @@ SOURCES += \
         adddialog.cpp \
         cpu.cpp \
         desktop.cpp \
+        editdialog.cpp \
         exceptions.cpp \
         main.cpp \
         mainwindow.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
         cpu.h \
         deepptr.h \
         desktop.h \
+        editdialog.h \
         exceptions.h \
         mainwindow.h \
         mobile.h \

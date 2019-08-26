@@ -31,6 +31,7 @@ public:
 
     // getters
     const std::string & getChipManufacturer() const;
+    int getChipManufacturerId() const;
     const std::string & getModelName() const;
     virtual const std::string & getSocket() const = 0;
     int getReleaseYear() const;

@@ -30,6 +30,7 @@ public:
     T & back();
     const T & operator[](unsigned int) const;
     T & operator[](unsigned int);
+    Qontainer<T> & operator=(const Qontainer &);
 
 
     class iterator
@@ -125,6 +126,17 @@ const T & Qontainer<T>::operator[](unsigned int i) const { return q[i]; }
 
 template <class T>
 T & Qontainer<T>::operator[](unsigned int i) { return q[i]; }
+
+template <class T>
+Qontainer<T> & Qontainer<T>::operator=(const Qontainer<T> & t) {
+    if (&t != this) {
+        delete [] q;
+        totalSize = t.totalSize;
+        endIndex = t.endIndex;
+        q = t.resize(t.totalSize);
+    }
+    return *this;
+}
 
 template <class T>
 void Qontainer<T>::push_back(const T & i) {

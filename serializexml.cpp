@@ -2,23 +2,23 @@
 
 SerializeXML::SerializeXML(const  QString & path) : filePath(path) { }
 
-void SerializeXML::write(const Qontainer<DeepPtr<CPU>> & v) const
+void SerializeXML::write(const Qontainer<DeepPtr<CPU>> & model) const
 {
     QSaveFile file(filePath);
 
     if(!file.open(QIODevice::WriteOnly)) {
-        //throw Exception("Errore nell'aprire il file in scrittura");
+        throw FileException("Error opening the file");
     }
 
     QXmlStreamWriter writer(&file);
     writer.setAutoFormatting(true);
 
     writer.writeStartDocument();
-    writer.writeStartElement("root"); //apre un tag Root
+    writer.writeStartElement("Qatalog");
 
-    if(!v.empty())
+    if(!model.empty())
     {
-        for(auto cit = v.cbegin(); cit != v.cend(); ++cit)
+        for(auto cit = model.cbegin(); cit != model.cend(); ++cit)
         {
             if(dynamic_cast<const Mobile*>(&(**cit)))
             {
@@ -26,7 +26,7 @@ void SerializeXML::write(const Qontainer<DeepPtr<CPU>> & v) const
                 writer.writeStartElement("Mobile");
 
                 writer.writeStartElement("chipManufacturer");
-                writer.writeCharacters(QString::fromStdString(mobile.getChipManufacturer()));
+                writer.writeCharacters(QString::number(mobile.getChipManufacturerId()));
                 writer.writeEndElement();
 
                 writer.writeStartElement("modelName");
@@ -46,23 +46,19 @@ void SerializeXML::write(const Qontainer<DeepPtr<CPU>> & v) const
                 writer.writeEndElement();
 
                 writer.writeStartElement("threadCount");
-                    writer.writeCharacters(QString::number(mobile.getThreadCount()));
+                writer.writeCharacters(QString::number(mobile.getThreadCount()));
                 writer.writeEndElement();
 
                 writer.writeStartElement("manufacturingProcess");
-                    writer.writeCharacters(QString::number(mobile.getManufacturingProcess()));
+                writer.writeCharacters(QString::number(mobile.getManufacturingProcess()));
                 writer.writeEndElement();
 
                 writer.writeStartElement("TDP");
-                    writer.writeCharacters(QString::number(mobile.getTdpRating()));
+                writer.writeCharacters(QString::number(mobile.getTdpRating()));
                 writer.writeEndElement();
 
                 writer.writeStartElement("x86_64");
-                    writer.writeCharacters(mobile.is64bit()? "true": "false");
-                writer.writeEndElement();
-
-                writer.writeStartElement("eccMemorySupport");
-                    writer.writeCharacters(mobile.getEccMemorySupport()? "true": "false");
+                writer.writeCharacters(mobile.is64bit() ? "true": "false");
                 writer.writeEndElement();
 
                 writer.writeEndElement();
@@ -72,7 +68,7 @@ void SerializeXML::write(const Qontainer<DeepPtr<CPU>> & v) const
                 writer.writeStartElement("Server");
 
                 writer.writeStartElement("chipManufacturer");
-                writer.writeCharacters(QString::fromStdString(server.getChipManufacturer()));
+                writer.writeCharacters(QString::number(server.getChipManufacturerId()));
                 writer.writeEndElement();
 
                 writer.writeStartElement("modelName");
@@ -104,11 +100,7 @@ void SerializeXML::write(const Qontainer<DeepPtr<CPU>> & v) const
                 writer.writeEndElement();
 
                 writer.writeStartElement("x86_64");
-                writer.writeCharacters(server.is64bit()? "true": "false");
-                writer.writeEndElement();
-
-                writer.writeStartElement("eccMemorySupport");
-                writer.writeCharacters(server.getEccMemorySupport()? "true": "false");
+                writer.writeCharacters(server.is64bit() ? "true": "false");
                 writer.writeEndElement();
 
                 writer.writeEndElement();
@@ -118,7 +110,7 @@ void SerializeXML::write(const Qontainer<DeepPtr<CPU>> & v) const
                 writer.writeStartElement("Desktop");
 
                 writer.writeStartElement("chipManufacturer");
-                writer.writeCharacters(QString::fromStdString(desktop.getChipManufacturer()));
+                writer.writeCharacters(QString::number(desktop.getChipManufacturerId()));
                 writer.writeEndElement();
 
                 writer.writeStartElement("modelName");
@@ -150,121 +142,127 @@ void SerializeXML::write(const Qontainer<DeepPtr<CPU>> & v) const
                 writer.writeEndElement();
 
                 writer.writeStartElement("x86_64");
-                writer.writeCharacters(desktop.is64bit()? "true": "false");
+                writer.writeCharacters(desktop.is64bit() ? "true": "false");
                 writer.writeEndElement();
 
                 writer.writeStartElement("eccMemorySupport");
-                writer.writeCharacters(desktop.getEccMemorySupport()? "true": "false");
+                writer.writeCharacters(desktop.getEccMemorySupport() ? "true": "false");
                 writer.writeEndElement();
 
                 writer.writeEndElement();
             }
         }
-        writer.writeEndElement(); //chiude root
+        writer.writeEndElement();
         writer.writeEndDocument();
 
-        //if(!file.commit())
-            //throw Exception("Failed write on XML file");
+        if (!file.commit())
+            throw FileException("Failed writing XML file");
     }
 
 }
 
-Qontainer<DeepPtr<CPU>> SerializeXML::read() const
+Qontainer<DeepPtr<CPU>> & SerializeXML::read() const
 {
-    Qontainer<DeepPtr<CPU>> vector;
+    Qontainer<DeepPtr<CPU>> * model = new Qontainer<DeepPtr<CPU>>();
     QFile file(filePath);
 
+    int chipManufacturer;
+    std::string modelName;
+    int socket;
+    int releaseYear;
+    int coreCount;
+    int threadCount;
+    int manufacturingProcess;
+    int TDP;
+    bool x86_64;
+    bool eccMemorySupport;
+
     if(!file.open(QIODevice::ReadOnly))
-    {
-        //throw ecx ("Non è stato possibile aprire il file"); non so come si chiami la tua classe di eccezioni, lo lascio a te
-        return  vector;
-    }
+        throw FileException("Error opening file");
 
     QXmlStreamReader reader(&file);
     if(reader.readNextStartElement())
     {
-        if(reader.name() == "root")
+        if(reader.name() == "Qatalog")
         {
             while(reader.readNextStartElement())
             {
                 if(reader.name() == "Mobile")
                 {
                     reader.readNextStartElement();
-                    int chipManufacturer = (reader.readElementText()).toInt();
+                    chipManufacturer = (reader.readElementText()).toInt();
                     reader.readNextStartElement();
-                    std::string modelName = (reader.readElementText()).toStdString();
+                    modelName = (reader.readElementText()).toStdString();
                     reader.readNextStartElement();
-                    int socket = (reader.readElementText()).toInt();
+                    socket = (reader.readElementText()).toInt();
                     reader.readNextStartElement();
-                    int releaseYear = (reader.readElementText()).toInt();
+                    releaseYear = (reader.readElementText()).toInt();
                     reader.readNextStartElement();
-                    int coreCount = (reader.readElementText()).toInt();
+                    coreCount = (reader.readElementText()).toInt();
                     reader.readNextStartElement();
-                    int threadCount = (reader.readElementText()).toInt();
+                    threadCount = (reader.readElementText()).toInt();
                     reader.readNextStartElement();
-                    int manufacturingProcess = (reader.readElementText()).toInt();
+                    manufacturingProcess = (reader.readElementText()).toInt();
                     reader.readNextStartElement();
-                    int TDP = (reader.readElementText()).toInt();
+                    TDP = (reader.readElementText()).toInt();
                     reader.readNextStartElement();
-                    bool x86_64 = (reader.readElementText()) == "true"? true:false;
-                    reader.readNextStartElement();
-                    bool eccMemorySupport = (reader.readElementText()) == "true"? true:false;
+                    x86_64 = reader.readElementText() == "true";
                     reader.readNextStartElement();
 
-                    //vector.push_back(DeepPtr<Mobile>(new Mobile(chipManufacturer, modelName, socket, releaseYear, coreCount, threadCount, manufacturingProcess, TDP, x86_64, eccMemorySupport)));
+                    model->push_back(new Mobile(chipManufacturer, modelName, socket, releaseYear, coreCount, threadCount, manufacturingProcess, TDP, x86_64));
                 }
                 else if (reader.name() == "Server")
                 {
                     reader.readNextStartElement();
-                    int chipManufacturer = (reader.readElementText()).toInt();
+                    chipManufacturer = (reader.readElementText()).toInt();
                     reader.readNextStartElement();
-                    std::string modelName = (reader.readElementText()).toStdString();
+                    modelName = (reader.readElementText()).toStdString();
                     reader.readNextStartElement();
-                    int socket = (reader.readElementText()).toInt();
+                    socket = (reader.readElementText()).toInt();
                     reader.readNextStartElement();
-                    int releaseYear = (reader.readElementText()).toInt();
+                    releaseYear = (reader.readElementText()).toInt();
                     reader.readNextStartElement();
-                    int coreCount = (reader.readElementText()).toInt();
+                    coreCount = (reader.readElementText()).toInt();
                     reader.readNextStartElement();
-                    int threadCount = (reader.readElementText()).toInt();
+                    threadCount = (reader.readElementText()).toInt();
                     reader.readNextStartElement();
-                    int manufacturingProcess = (reader.readElementText()).toInt();
+                    manufacturingProcess = (reader.readElementText()).toInt();
                     reader.readNextStartElement();
-                    int TDP = (reader.readElementText()).toInt();
+                    TDP = (reader.readElementText()).toInt();
                     reader.readNextStartElement();
-                    bool x86_64 = (reader.readElementText()) == "true"? true:false;
+                    x86_64 = reader.readElementText() == "true";
                     reader.readNextStartElement();
-                    bool eccMemorySupport = (reader.readElementText()) == "true"? true:false;
 
-                    //vector.push_back(DeepPtr<Mobile>(new Server(chipManufacturer, modelName, socket, releaseYear, coreCount, threadCount, manufacturingProcess, TDP, x86_64, eccMemorySupport)));
+                    model->push_back(new Server(chipManufacturer, modelName, socket, releaseYear, coreCount, threadCount, manufacturingProcess, TDP, x86_64));
                 }
                 else if (reader.name() == "Desktop")
                 {
                     reader.readNextStartElement();
-                    int chipManufacturer = (reader.readElementText()).toInt();
+                    chipManufacturer = (reader.readElementText()).toInt();
                     reader.readNextStartElement();
-                    std::string modelName = (reader.readElementText()).toStdString();
+                    modelName = (reader.readElementText()).toStdString();
                     reader.readNextStartElement();
-                    int socket = (reader.readElementText()).toInt();
+                    socket = (reader.readElementText()).toInt();
                     reader.readNextStartElement();
-                    int releaseYear = (reader.readElementText()).toInt();
+                    releaseYear = (reader.readElementText()).toInt();
                     reader.readNextStartElement();
-                    int coreCount = (reader.readElementText()).toInt();
+                    coreCount = (reader.readElementText()).toInt();
                     reader.readNextStartElement();
-                    int threadCount = (reader.readElementText()).toInt();
+                    threadCount = (reader.readElementText()).toInt();
                     reader.readNextStartElement();
-                    int manufacturingProcess = (reader.readElementText()).toInt();
+                    manufacturingProcess = (reader.readElementText()).toInt();
                     reader.readNextStartElement();
-                    int TDP = (reader.readElementText()).toInt();
+                    TDP = (reader.readElementText()).toInt();
                     reader.readNextStartElement();
-                    bool x86_64 = (reader.readElementText()) == "true"? true:false;
+                    x86_64 = reader.readElementText() == "true";
                     reader.readNextStartElement();
-                    bool eccMemorySupport = (reader.readElementText()) == "true"? true:false;
+                    eccMemorySupport = reader.readElementText() == "true";
+                    reader.readNextStartElement();
 
-                    //vector.push_back(DeepPtr<Mobile>(new Desktop(chipManufacturer, modelName, socket, releaseYear, coreCount, threadCount, manufacturingProcess, TDP, x86_64, eccMemorySupport)));
+                    model->push_back(new Desktop(chipManufacturer, modelName, socket, releaseYear, coreCount, threadCount, manufacturingProcess, TDP, x86_64, eccMemorySupport));
                 }
             }
         }
     }
-    return vector;
+    return *model;
 }

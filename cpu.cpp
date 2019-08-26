@@ -2,13 +2,26 @@
 
 const std::map <const int, const std::string> CPU::manufacturers ( { std::pair <const int, const std::string> (0, "AMD"), std::pair <const int, const std::string> (1, "Intel") } );
 
-CPU::CPU (const int manufacturer, const std::string & model, const int socket, const int year, const int cores, const int threads, const int nm, const int w, const bool bits, const bool ecc) : chipManufacturer(manufacturer), modelName(model), socket(socket), releaseYear(year), coreCount(cores), threadCount(threads), manufacturingProcess(nm), TDP(w), x86_64(bits), eccMemorySupport(ecc) {
+CPU::CPU (const int manufacturer, const std::string & model, const int socket, const int year, const int cores, const int threads, const int nm, const int w, const bool bits, const bool ecc) :
+    chipManufacturer(manufacturer),
+    modelName(model),
+    releaseYear(year),
+    threadCount(threads),
+    manufacturingProcess(nm),
+    x86_64(bits),
+    socket(socket),
+    coreCount(cores),
+    TDP(w),
+    eccMemorySupport(ecc)
+{
     //manufacturer exception
 }
 
 // getters
 
 const std::string & CPU::getChipManufacturer() const {  return manufacturers.at(chipManufacturer); }
+
+int CPU::getChipManufacturerId() const { return chipManufacturer; }
 
 const std::string & CPU::getModelName() const { return modelName; }
 
@@ -32,7 +45,6 @@ bool CPU::getEccMemorySupport() const { return eccMemorySupport; }
 void CPU::setManufacturer(const int manufacturer) {
     if (manufacturers.find(manufacturer) != manufacturers.end())
         chipManufacturer = manufacturer;
-    //else eccezione
 }
 
 void CPU::setModelName(const std::string & model) { modelName = model; }
